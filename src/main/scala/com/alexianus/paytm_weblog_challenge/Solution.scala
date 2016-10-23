@@ -12,11 +12,11 @@ object Solution {
     val input_path = java.net.URLDecoder.decode(args(0), "UTF-8")
 
     val raw_weblogs = sc.textFile(input_path)
-    System.out.println(s"Total number of raw log lines: ${raw_weblogs.count}")
+//    System.out.println(s"Total number of raw log lines: ${raw_weblogs.count}")
 
     // Parse all the log lines, discarding invalid lines
     val parsed_weblogs = raw_weblogs.flatMap(line => LogLine.parse(line))
-    System.out.println(s"Total number of parsed log lines: ${parsed_weblogs.count}")
+//    System.out.println(s"Total number of parsed log lines: ${parsed_weblogs.count}")
 
     // Group the requests by client
     val weblogs_by_client = parsed_weblogs.groupBy(_.client.ip)
@@ -29,7 +29,7 @@ object Solution {
 
     // Ungroup, parts 2-3 don't depend on the grouping
     val sessions = sessions_by_client.values.flatMap(identity[List[Session]])
-    System.out.println(s"Total number of sessions: ${sessions.count}")
+//    System.out.println(s"Total number of sessions: ${sessions.count}")
 
     // 2. Calculate the average session duration
     val average_session_duration = Duration.millis(
