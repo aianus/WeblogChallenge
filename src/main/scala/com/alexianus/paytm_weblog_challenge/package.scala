@@ -34,6 +34,7 @@ package object paytm_weblog_challenge {
       .appendMinutes()
       .appendSeparator(":")
       .appendSeconds()
+      .appendSuffix("s")
       .toFormatter();
 
     def formatted: String = {
