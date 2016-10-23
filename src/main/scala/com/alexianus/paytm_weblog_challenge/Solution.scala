@@ -1,6 +1,6 @@
 package com.alexianus.paytm_weblog_challenge
 
-import com.alexianus.aws_elb_log_parser.LogLine
+import com.alexianus.aws_elb_log_parser.{HttpRequest, LogLine, Socket}
 import com.github.nscala_time.time.Imports._
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -8,6 +8,8 @@ object Solution {
   def main(args: Array[String]) {
     val conf = new SparkConf()
       .setAppName("PaytmWeblogChallengeSolution")
+      .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+      .registerKryoClasses(Array(classOf[LogLine], classOf[Session], classOf[HttpRequest], classOf[Socket]))
     val sc = new SparkContext(conf)
     val input_path = java.net.URLDecoder.decode(args(0), "UTF-8")
 
