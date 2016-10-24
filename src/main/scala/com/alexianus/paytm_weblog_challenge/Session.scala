@@ -1,7 +1,6 @@
 package com.alexianus.paytm_weblog_challenge
 
 import com.alexianus.aws_elb_log_parser.LogLine
-import com.github.nscala_time.time.OrderingImplicits.DurationOrdering
 import org.joda.time.{Duration, Interval}
 
 // Immutable Session class
@@ -14,8 +13,4 @@ class Session(val loglines: List[LogLine]) {
       durationCache
   }
   private var durationCache: Duration = null
-}
-
-object Session {
-  val orderingByDuration: Ordering[Session] = Ordering.by(_.duration)
 }

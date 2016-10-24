@@ -1,6 +1,7 @@
 package com.alexianus.paytm_weblog_challenge
 
 import com.alexianus.aws_elb_log_parser.{HttpRequest, LogLine, Socket}
+import com.github.nscala_time.time.Implicits.{DurationOrdering, richDuration}
 import com.github.nscala_time.time.Imports._
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -47,8 +48,10 @@ object Solution {
     System.out.println(s"3. Average distinct uris per session: $average_distinct_uris_per_session")
 
     // 4. Find the clients with the longest session times
-    val client_max_session_durations = sessions_by_client.mapValues(_.max(Session.orderingByDuration.reverse).duration)
-    val top_10_engaged_clients = client_max_session_durations.sortBy(_._2, false).take(10)
+    val client_average_session_durations = sessions_by_client.mapValues { sessions =>
+      sessions.map(_.duration).foldLeft(Duration.millis(0))(_ + _) / sessions.length
+    }
+    val top_10_engaged_clients = client_average_session_durations.sortBy(_._2, false).take(10)
     System.out.println("4. Most engaged clients:")
     top_10_engaged_clients.foreach { case (ip, duration) =>
       System.out.println(s"$ip ${duration.formatted}")
